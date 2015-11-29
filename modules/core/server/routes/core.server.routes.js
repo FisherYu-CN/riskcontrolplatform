@@ -1,15 +1,18 @@
 'use strict';
 
+/**
+ * 定义服务端基础路由
+ *
+ * @param {Object} app Express应用对象
+ */
 module.exports = function (app) {
-  // Root routing
+  // 基础路由处理模块
   var core = require('../controllers/core.server.controller');
 
-  // Define error pages
+  // 当遇到500服务器错误路由，跳转到相应错误页面
   app.route('/server-error').get(core.renderServerError);
-
-  // Return a 404 for all undefined api, module or lib routes
+  // 对API/模块/类库访问遇到404资源无法找到错误时，跳转到相应错误页面
   app.route('/:url(api|modules|lib)/*').get(core.renderNotFound);
-
-  // Define application route
+  // 其他路由则跳转到平台主页
   app.route('/*').get(core.renderIndex);
 };

@@ -1,42 +1,49 @@
 'use strict';
 
 /**
- * Render the main application page
+ * 渲染平台主页面
+ *
+ * @param {Object} req 用户发起的HTTP请求
+ * @param {Object} res 用户得到的HTTP相应
  */
 exports.renderIndex = function (req, res) {
-  res.render('modules/core/server/views/index', {
-    user: req.user || null
-  });
+    res.render('modules/core/server/views/index', {
+        user: req.user || null
+    });
 };
 
 /**
- * Render the server error page
+ * 渲染平台500服务器错误页面
+ *
+ * @param {Object} req 用户发起的HTTP请求
+ * @param {Object} res 用户得到的HTTP相应
  */
 exports.renderServerError = function (req, res) {
-  res.status(500).render('modules/core/server/views/500', {
-    error: 'Oops! Something went wrong...'
-  });
+    res.status(500).render('modules/core/server/views/500', {
+        error: 'Oops! Something went wrong...'
+    });
 };
 
 /**
- * Render the server not found responses
- * Performs content-negotiation on the Accept HTTP header
+ * 渲染平台404资源无法找到错误页面，将针对接受的HTTP头提供内容协商
+ *
+ * @param {Object} req 用户发起的HTTP请求
+ * @param {Object} res 用户得到的HTTP相应
  */
 exports.renderNotFound = function (req, res) {
-
-  res.status(404).format({
-    'text/html': function () {
-      res.render('modules/core/server/views/404', {
-        url: req.originalUrl
-      });
-    },
-    'application/json': function () {
-      res.json({
-        error: 'Path not found'
-      });
-    },
-    'default': function () {
-      res.send('Path not found');
-    }
-  });
+    res.status(404).format({
+        'text/html': function () {
+            res.render('modules/core/server/views/404', {
+                url: req.originalUrl
+            });
+        },
+        'application/json': function () {
+            res.json({
+                error: 'Path not found'
+            });
+        },
+        'default': function () {
+            res.send('Path not found');
+        }
+    });
 };
