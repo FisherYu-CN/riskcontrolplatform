@@ -25,7 +25,7 @@ var getUniqueErrorMessage = function (err) {
  * 从MongoDB返回的错误对象中获取错误信息
  *
  * @param {Object} err MongoDB返回的错误对象
- * @returns {string} 错误信息
+ * @return {string} 错误信息
  */
 exports.getErrorMessage = function (err) {
     var message = '';
