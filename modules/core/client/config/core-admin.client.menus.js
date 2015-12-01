@@ -1,6 +1,6 @@
 'use strict';
 
-// core.adminÄ£¿éµÄ²Ëµ¥ÉèÖÃ
+// core.adminæ¨¡å—çš„èœå•è®¾ç½®
 angular.module('core.admin').run(['Menus',
     function (Menus) {
         Menus.addMenuItem('topbar', {
