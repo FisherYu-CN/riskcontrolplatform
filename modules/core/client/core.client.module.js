@@ -1,6 +1,6 @@
 'use strict';
 
-// ×¢²áºËĞÄÄ£¿é¼°ÒÀÀµ
+// æ³¨å†Œæ ¸å¿ƒæ¨¡å—åŠä¾èµ–
 ApplicationConfiguration.registerModule('core');
 ApplicationConfiguration.registerModule('core.admin', ['core']);
 ApplicationConfiguration.registerModule('core.admin.routes', ['ui.router']);

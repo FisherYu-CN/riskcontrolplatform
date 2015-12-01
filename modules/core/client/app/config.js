@@ -1,7 +1,7 @@
 'use strict';
 
 /**
- * 初始化平台的全局应用配置管理对象，所有其他模块统一通过本对象注册其模块及依赖
+ * 初始化平台的前端全局配置管理对象，所有其他前端模块统一通过本对象注册其模块及依赖
  *
  * @return {Object} 应用配置对象
  */
@@ -11,13 +11,13 @@ var ApplicationConfiguration = (function () {
     var applicationModuleVendorDependencies = ['ngResource', 'ngAnimate', 'ngMessages', 'ui.router', 'ui.bootstrap', 'ui.utils', 'angularFileUpload'];
 
     /**
-     * 注册一个垂直模块
+     * 注册一个前端模块
      *
-     * @param {string} moduleName 新模块名称
-     * @param {Array} dependencies 新模块锁依赖的其他模块的名称数组
+     * @param {string} moduleName 前端模块名称
+     * @param {Array=} dependencies 前端模块所依赖的其他模块的名称数组
      */
     var registerModule = function (moduleName, dependencies) {
-        // 注册模块并将本模块添加到全局模块依赖模块的数组中
+        // 注册前端模块并将该模块添加到全局模块依赖模块的数组中
         angular.module(moduleName, dependencies || []);
         angular.module(applicationModuleName).requires.push(moduleName);
     };
