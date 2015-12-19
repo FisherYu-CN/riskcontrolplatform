@@ -1,0 +1,67 @@
+<nav class="navbar-default navbar-static-side" role="navigation" ng-controller="HeaderController">
+
+    <div class="sidebar-collapse">
+        <ul side-navigation id="side-menu" class="nav metismenu" ng-if="menu.shouldRender(authentication.user);">
+            <li class="nav-header">
+
+                <div dropdown class="profile-element">
+
+                    <!-- 登录用户头像 -->
+                    <img alt="image" class="img-circle" src="modules/core/client/img/patterns/profile_small.jpg"/>
+                    <!--<img ng-src="{{authentication.user.profileImageURL}}" alt="{{authentication.user.displayName}}" class="header-profile-image" />-->
+
+                    <!-- 登录用户基本信息 -->
+                    <a dropdown-toggle href>
+                        <span class="clear">
+                            <span class="block m-t-xs">
+                                <strong class="font-bold">Joe Doe</strong>
+                            </span>
+                            <span class="text-muted block">
+                                TaiFinance<b class="caret"></b>
+                            </span>
+                        </span>
+                    </a>
+
+                    <!-- 个人信息菜单栏 -->
+                    <ul dropdown-menu class="dropdown-menu animated fadeInRight m-t-xs">
+                        <li><a href="">Logout</a></li>
+                    </ul>
+                </div>
+
+                <div class="logo-element">
+                    TF
+                </div>
+            </li>
+
+            <!-- 侧边菜单栏 -->
+            <li ui-sref-active="active">
+                <a ui-sref="home">
+                    <i class="fa fa-home"></i>
+                    <span class="nav-label">Dashboard</span>
+                </a>
+            </li>
+
+            <li ng-repeat="item in menu.items | orderBy: 'position'" ng-if="item.shouldRender(authentication.user);"
+                ng-switch="item.type" ng-class="{active: $state.includes(item.state)}">
+
+                <a ng-switch-when="dropdown">
+                    <i class="fa {{item.class}}"></i>
+                    <span class="nav-label">{{item.title}}</span>
+                    <span ng-show="item.items" class="fa arrow"></span>
+                </a>
+                <ul ng-switch-when="dropdown" class="nav nav-second-level collapse" ng-class="{in: $state.includes(item.state)}">
+                    <li role="presentation" ng-repeat="subitem in item.items | orderBy: 'position'"
+                        ng-if="subitem.shouldRender(authentication.user);"
+                        ui-sref-active="active">
+                        <a role="menuitem" ui-sref="{{subitem.state}}" ng-bind="subitem.title"></a>
+                    </li>
+                </ul>
+
+                <a ng-switch-default ui-sref="{{item.state}}">
+                    <i class="fa {{item.class}}"></i>
+                    <span class="nav-label ng-binding">{{item.title}}</span>
+                </a>
+            </li>
+        </ul>
+    </div>
+</nav>

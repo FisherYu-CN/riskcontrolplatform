@@ -1,32 +1,17 @@
-<div class="container" ng-controller="HeaderController">
+<div class="row border-bottom" ng-controller="HeaderController">
 
-    <!-- 导航栏头，包括切换菜单展开/闭合的按钮(仅在中等/小屏幕上显示)与网站LOGO -->
-    <div class="navbar-header">
-        <button class="navbar-toggle" type="button" ng-click="toggleCollapsibleMenu()">
-            <span class="sr-only">Toggle navigation</span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-        </button>
-        <a ui-sref="home" class="navbar-brand">MEAN.JS</a>
-    </div>
-
-    <nav class="collapse navbar-collapse" collapse="!isCollapsed" role="navigation">
-        <!-- 顶部菜单栏 -->
-        <ul class="nav navbar-nav" ng-if="menu.shouldRender(authentication.user);">
-            <li ng-repeat="item in menu.items | orderBy: 'position'" ng-if="item.shouldRender(authentication.user);" ng-switch="item.type" ng-class="{ active: $state.includes(item.state), dropdown: item.type === 'dropdown' }" class="{{item.class}}" dropdown="item.type === 'dropdown'">
-                <a ng-switch-when="dropdown" class="dropdown-toggle" dropdown-toggle role="button">{{::item.title}}&nbsp;<span class="caret"></span></a>
-                <ul ng-switch-when="dropdown" class="dropdown-menu">
-                    <li ng-repeat="subitem in item.items | orderBy: 'position'" ng-if="subitem.shouldRender(authentication.user);" ui-sref-active="active">
-                        <a ui-sref="{{subitem.state}}" ng-bind="subitem.title"></a>
-                    </li>
-                </ul>
-                <a ng-switch-default ui-sref="{{item.state}}" ng-bind="item.title"></a>
-            </li>
-        </ul>
+    <nav class="navbar navbar-static-top " role="navigation">
+        <div class="navbar-header">
+            <span minimalize-sidebar></span>
+            <form role="search" class="navbar-form-custom" method="post" action="">
+                <div class="form-group">
+                    <input type="text" placeholder="Search for something..." class="form-control" name="top-search" id="top-search">
+                </div>
+            </form>
+        </div>
 
         <!-- 注册与登录按钮 -->
-        <ul class="nav navbar-nav navbar-right" ng-hide="authentication.user">
+        <ul class="nav navbar-top-links navbar-right" ng-hide="authentication.user">
             <li ui-sref-active="active">
                 <a ui-sref="authentication.signup">Sign Up</a>
             </li>
@@ -37,13 +22,11 @@
         </ul>
 
         <!-- 个人信息管理 -->
-        <ul class="nav navbar-nav navbar-right" ng-show="authentication.user">
+        <ul class="nav navbar-top-links navbar-right" ng-show="authentication.user">
             <li class="dropdown" dropdown>
-                <a class="dropdown-toggle user-header-dropdown-toggle" dropdown-toggle role="button">
-                    <img ng-src="{{authentication.user.profileImageURL}}" alt="{{authentication.user.displayName}}" class="header-profile-image" />
+                <a class="dropdown-toggle" dropdown-toggle role="button">
                     <span ng-bind="authentication.user.displayName"></span> <b class="caret"></b>
                 </a>
-
                 <ul class="dropdown-menu" role="menu">
                     <li ui-sref-active="active">
                         <a ui-sref="settings.profile">Edit Profile</a>

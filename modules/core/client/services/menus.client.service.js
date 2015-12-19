@@ -213,8 +213,8 @@ angular.module('core').service('Menus', [
             return this.menus[menuId];
         };
 
-        // 添加顶部菜单栏
-        this.addMenu('topbar', {
+        // 添加侧边菜单栏
+        this.addMenu('sidebar', {
             roles: ['*']
         });
     }
