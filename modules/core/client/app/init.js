@@ -12,7 +12,7 @@ angular.module(ApplicationConfiguration.applicationModuleName)
         // 启用HTML5模型的路由，改变Angular默认在URL中添加#的行为，并将hash的前缀改为!
         $locationProvider.html5Mode(true).hashPrefix('!');
         // 添加验证拦截器
-        $httpProvider.interceptors.push('authInterceptor');
+        $httpProvider.interceptors.push('AuthInterceptor');
     }]);
 
 // 运行应用主模块预处理函数

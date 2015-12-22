@@ -5,6 +5,7 @@
   "dependencies": {
     "bootstrap": "~3",
     "jquery": "~2",
+    "jquery-ui": "~1",
     "angular": "~1.3",
     "angular-resource": "~1.3",
     "angular-animate": "~1.3",

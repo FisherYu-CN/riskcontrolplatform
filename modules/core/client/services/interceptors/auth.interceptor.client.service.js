@@ -1,7 +1,7 @@
 'use strict';
 
 // 鉴权拦截器，拦截所有错误响应，对401/403错误码进行相应的页面跳转
-angular.module('core').factory('authInterceptor', ['$q', '$injector',
+angular.module('core').factory('AuthInterceptor', ['$q', '$injector',
     function ($q, $injector) {
         return {
             responseError: function(rejection) {
