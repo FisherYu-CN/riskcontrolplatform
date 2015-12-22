@@ -6,22 +6,22 @@ angular.module('articles').run(['Menus',
         // Add the articles dropdown item
         Menus.addMenuItem('sidebar', {
             title: 'Articles',
-            state: 'articles',
+            state: 'portal.articles',
             type: 'dropdown',
             class: 'fa-pencil',
             roles: ['*']
         });
 
         // Add the dropdown list item
-        Menus.addSubMenuItem('sidebar', 'articles', {
+        Menus.addSubMenuItem('sidebar', 'portal.articles', {
             title: 'List Articles',
-            state: 'articles.list'
+            state: 'portal.articles.list'
         });
 
         // Add the dropdown create item
-        Menus.addSubMenuItem('sidebar', 'articles', {
+        Menus.addSubMenuItem('sidebar', 'portal.articles', {
             title: 'Create Articles',
-            state: 'articles.create',
+            state: 'portal.articles.create',
             roles: ['user']
         });
     }

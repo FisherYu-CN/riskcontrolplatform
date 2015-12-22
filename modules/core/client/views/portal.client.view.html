@@ -1,0 +1,16 @@
+<div id="wrapper">
+    <!-- 导航侧边栏 -->
+    <div data-ng-include="'/modules/core/client/views/navigation.client.view.html'"></div>
+
+    <div id="page-wrapper" class="gray-bg">
+
+        <!-- 网页头部 -->
+        <header ng-include="'/modules/core/client/views/header.client.view.html'"></header>
+
+        <!-- 内容区域 -->
+        <div ui-view></div>
+
+        <!-- 网页尾部 -->
+        <footer ng-include="'/modules/core/client/views/footer.client.view.html'"></footer>
+    </div>
+</div>

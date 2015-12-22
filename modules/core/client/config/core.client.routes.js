@@ -12,11 +12,11 @@ angular.module('core').config(['$stateProvider', '$urlRouterProvider',
         });
     });
 
-    // 主页路由定义
+    // 核心基础路由定义
     $stateProvider
-        .state('home', {
+        .state('landing', {
             url: '/',
-            templateUrl: 'modules/core/client/views/home.client.view.html'
+            templateUrl: 'modules/core/client/views/landing.client.view.html'
         })
         .state('not-found', {
             url: '/not-found',
@@ -38,6 +38,18 @@ angular.module('core').config(['$stateProvider', '$urlRouterProvider',
             data: {
                 ignoreState: true
             }
+        })
+        .state('portal', {
+            url: '/portal',
+            abstract: true,
+            templateUrl: 'modules/core/client/views/portal.client.view.html',
+            data: {
+                roles: ['user', 'admin']
+            }
+        })
+        .state('portal.home', {
+            url: '',
+            templateUrl: 'modules/core/client/views/home.client.view.html'
         });
     }
 ]);
