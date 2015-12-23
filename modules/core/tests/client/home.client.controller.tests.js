@@ -1,24 +1,28 @@
 'use strict';
 
 (function () {
-  describe('HomeController', function () {
-    //Initialize global variables
-    var scope,
-      HomeController;
+    describe('HomeController', function () {
+        // 初始化全局变量
+        var scope,
+            HomeController,
+            Authentication;
 
-    // Load the main application module
-    beforeEach(module(ApplicationConfiguration.applicationModuleName));
+        // 加载主应用模块
+        beforeEach(module(ApplicationConfiguration.applicationModuleName));
 
-    beforeEach(inject(function ($controller, $rootScope) {
-      scope = $rootScope.$new();
+        // 注入Angular服务并创建一个HomeController
+        beforeEach(inject(function($controller, $rootScope, _Authentication_) {
+            scope = $rootScope.$new();
+            Authentication = _Authentication_;
 
-      HomeController = $controller('HomeController', {
-        $scope: scope
-      });
-    }));
+            HomeController = $controller('HomeController', {
+                $scope: scope
+            });
+        }));
 
-    it('should expose the authentication service', function () {
-      expect(scope.authentication).toBeTruthy();
+        // 鉴权服务应该被暴露在HomeController中
+        it('should expose the authentication service', function() {
+            expect(scope.authentication).toBe(Authentication);
+        });
     });
-  });
 })();
