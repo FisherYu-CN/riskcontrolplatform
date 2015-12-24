@@ -6,7 +6,8 @@ angular.module('chat').run(['Menus',
         // Set side bar menu items
         Menus.addMenuItem('sidebar', {
             title: 'Chat',
-            state: 'chat'
+            state: 'chat',
+            position: 2
         });
     }
 ]);

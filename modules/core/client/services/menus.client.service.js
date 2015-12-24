@@ -176,7 +176,7 @@ angular.module('core').service('Menus', [
          * @param {string} menuItemState 主菜单项状态名
          * @return {Object} 被删除的主菜单项所属的菜单栏对象
          */
-        this.removeMenuItem = function (menuId, menuItemState) {
+        this.removeMenuItem = function(menuId, menuItemState) {
             // 验证菜单栏是否存在，不存在时会抛出异常
             this.validateMenuExistance(menuId);
 
@@ -194,17 +194,17 @@ angular.module('core').service('Menus', [
          * 删除一个子菜单项
          *
          * @param {string} menuId 子菜单项所属的菜单栏ID
-         * @param {string} submenuItemState 子菜单项状态名
+         * @param {string} subMenuItemState 子菜单项状态名
          * @return {Object} 被删除的主菜单项所属的菜单栏对象
          */
-        this.removeSubMenuItem = function (menuId, submenuItemState) {
+        this.removeSubMenuItem = function(menuId, subMenuItemState) {
             // 验证菜单栏是否存在，不存在时会抛出异常
             this.validateMenuExistance(menuId);
 
             //  查找子菜单项并删除
             for (var itemIndex = 0; itemIndex < this.menus[menuId].items.length; itemIndex++) {
                 for (var subitemIndex = 0; subitemIndex < this.menus[menuId].items[itemIndex].items.length; subitemIndex++) {
-                    if (this.menus[menuId].items[itemIndex].items[subitemIndex].state === submenuItemState) {
+                    if (this.menus[menuId].items[itemIndex].items[subitemIndex].state === subMenuItemState) {
                          this.menus[menuId].items[itemIndex].items.splice(subitemIndex, 1);
                     }
                 }
@@ -212,6 +212,45 @@ angular.module('core').service('Menus', [
 
             return this.menus[menuId];
         };
+
+        /**
+         * 根据状态名查找对应的菜单项或子菜单项
+         * 若子菜单项符合条件，则其父菜单项也会被返回
+         *
+         * @param {string} menuId 菜单栏ID
+         * @param {string} state 目标菜单项的状态名
+         * @returns {Array} 包含菜单项、子菜单项的数组
+         */
+        this.findMenuItem = function(menuId, state) {
+            // 验证菜单栏是否存在，不存在时会抛出异常
+            this.validateMenuExistance(menuId);
+
+            var menuPath = [];
+
+            if (state) {
+
+                // 查找菜单项
+                for (var itemIndex = 0; itemIndex < this.menus[menuId].items.length; itemIndex++) {
+
+                    if (this.menus[menuId].items[itemIndex].state === state) {
+                        menuPath.push(this.menus[menuId].items[itemIndex]);
+                        return menuPath;
+                    }
+
+                    // 查找子菜单项
+                    for (var subitemIndex = 0; subitemIndex < this.menus[menuId].items[itemIndex].items.length; subitemIndex++) {
+
+                        if (this.menus[menuId].items[itemIndex].items[subitemIndex].state === state) {
+                            menuPath.push(this.menus[menuId].items[itemIndex]);
+                            menuPath.push(this.menus[menuId].items[itemIndex].items[subitemIndex]);
+                            return menuPath;
+                        }
+                    }
+                }
+            }
+
+            return menuPath;
+        }
 
         // 添加侧边菜单栏
         this.addMenu('sidebar', {

@@ -9,7 +9,8 @@ angular.module('articles').run(['Menus',
             state: 'portal.articles',
             type: 'dropdown',
             class: 'fa-pencil',
-            roles: ['*']
+            roles: ['*'],
+            position: 1
         });
 
         // Add the dropdown list item
