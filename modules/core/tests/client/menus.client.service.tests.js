@@ -89,45 +89,85 @@
         describe('shouldRender', function() {
 
             // 初始化变量
-            var menu1Options = {
+            var menuOptions = {
                     roles: ['*', 'menurole']
                 },
-                menu2Options = {
-                    roles: ['b', 'menurole', 'c']
-                },
-                menu1,
-                menu2,
-                user1 = {
-                    roles: ['1', 'menurole', '2']
-                },
-                user2 = {
-                    roles: ['1', '2', '3']
-                };
+                menu;
 
             // 添加测试菜单menu1
             beforeEach(function() {
-                menu1 = Menus.addMenu('menu1', menu1Options);
-                menu2 = Menus.addMenu('menu2', menu2Options);
+                menu = Menus.addMenu('menu1', menuOptions);
             });
 
-            // 用户登出时，shouldRender应该返回false
-            it('should not render when user logged out', function() {
-                expect(menu1.shouldRender()).toBeFalsy();
+            // 当用户登出时
+            describe('when logged out', function() {
+
+                // 若菜单角色包含*通配符
+                describe('menu with * role', function() {
+
+                    // shouldRender应该返回true
+                    it('should render', function() {
+                        expect(menu.shouldRender()).toBeTruthy();
+                    });
+                });
+
+                // 若菜单角色不包含*通配符
+                describe('menu without * role', function() {
+
+                    // 创建新的菜单
+                    beforeEach(function () {
+                        menu = Menus.addMenu('menu1', {
+                            roles: ['b', 'menurole', 'c']
+                        });
+                    });
+
+                    // shouldRender应该返回false
+                    it('should not render', function() {
+                        expect(menu.shouldRender()).toBeFalsy();
+                    });
+                });
             });
 
-            // 用户登入时，若菜单角色包含*通配符，shouldRender应该对所有用户返回true
-            it('should render if the menu with * role when user logged in', function() {
-                expect(menu1.shouldRender(user1)).toBeTruthy();
-            });
+            // 当用户登入时
+            describe('when logged in', function() {
 
-            // 用户登入时，若菜单角色不包含*通配符，shouldRender在用户和菜单拥有相同的角色时返回true
-            it('should render if user has same role as menu', function() {
-                expect(menu2.shouldRender(user1)).toBeTruthy();
-            });
+                // 初始化变量
+                var user = {
+                    roles: ['1', 'menurole', '2']
+                };
 
-            // 用户登入时，若菜单角色不包含*通配符，shouldRender在用户和菜单拥有完全不同的角色时返回false
-            it('should not render if user has different roles', function() {
-                expect(menu2.shouldRender(user2)).toBeFalsy();
+                // 若菜单角色包含*通配符
+                describe('menu with * role', function() {
+
+                    // shouldRender应该对所有用户返回true
+                    it('should render', function() {
+                        expect(menu.shouldRender(user)).toBeTruthy();
+                    });
+                });
+
+                // 若菜单角色不包含*通配符
+                describe('menu without * role', function() {
+
+                    // 创建新的菜单
+                    beforeEach(function() {
+                        menu = Menus.addMenu('menu1', {
+                            roles: ['b', 'menurole', 'c']
+                        });
+                    });
+
+                    // shouldRender在用户和菜单拥有相同的角色时返回true
+                    it('should render if user has same role as menu', function() {
+                        expect(menu.shouldRender(user)).toBeTruthy();
+                    });
+
+                    // shouldRender在用户和菜单拥有完全不同的角色时返回false
+                    it('should not render if user has different roles', function() {
+                        user = {
+                            roles: ['1', '2', '3']
+                        };
+                        expect(menu.shouldRender(user)).toBeFalsy();
+                    });
+                });
             });
         });
 
@@ -148,7 +188,9 @@
 
                 // 当菜单不存在时，应该抛出相应错误
                 it('should throw no menu error', function() {
-                    expect(Menus.validateMenuExistance('noMenuId')).toThrowError('Menu does not exist');
+                    expect(function(){
+                        Menus.validateMenuExistance('noMenuId');
+                    }).toThrowError('Menu does not exist');
                 });
             });
 
