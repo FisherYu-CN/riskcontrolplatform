@@ -7,9 +7,9 @@ angular.module('articles').config(['$stateProvider',
         // Articles state routing
         $stateProvider
             .state('portal.articles', {
-                abstract: true,
                 url: '/articles',
-                template: '<ui-view/>'
+                template: '<ui-view/>',
+                redirectTo: 'portal.articles.list'
             })
             .state('portal.articles.list', {
                 url: '',

@@ -7,6 +7,7 @@ angular.module('core.admin').run(['Menus',
         Menus.addMenuItem('sidebar', {
             title: 'Home',
             state: 'portal.home',
+            isHome: true,
             class: 'fa-home',
             roles: ['user'],
             position: 0

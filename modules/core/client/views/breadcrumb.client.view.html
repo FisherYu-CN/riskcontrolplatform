@@ -1,5 +1,11 @@
 <div class="row wrapper border-bottom white-bg page-heading">
     <div class="col-lg-10">
-        <h2>{{title}}</h2>
+        <h2>{{breadcrumbTitle}}</h2>
+        <ol class="breadcrumb">
+            <li ng-repeat="menuItem in breadcrumbMenuItems">
+                <a ng-if="!$last" ui-sref="{{menuItem.state}}">{{menuItem.title}}</a>
+                <strong ng-if="$last">{{menuItem.title}}</strong>
+            </li>
+        </ol>
     </div>
 </div>

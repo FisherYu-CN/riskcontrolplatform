@@ -288,7 +288,7 @@
             });
 
             // 使用选项参数
-            describe('with options set', function() {
+            describe('with options set for non home menu item', function() {
 
                 // 菜单项应该被添加到菜单的菜单项列表中
                 it('should add menu item to menu', function() {
@@ -324,6 +324,49 @@
                 it('should call addSubMenuItem for each item in options', function() {
                     expect(Menus.addSubMenuItem).toHaveBeenCalledWith(menuId, menuItemOptions.state, subMenuItem1);
                     expect(Menus.addSubMenuItem).toHaveBeenCalledWith(menuId, menuItemOptions.state, subMenuItem2);
+                });
+            });
+
+            // 使用选项参数添加Home菜单项
+            describe('with options set for home menu item', function() {
+                // 初始化变量
+                var homeMenuItemOptions = {
+                        title: 'home',
+                        isHome: true
+                    },
+                    homeMenuItem;
+
+                // 添加Home菜单项
+                beforeEach(function() {
+                    menu = Menus.addMenuItem(menuId, homeMenuItemOptions);
+                    homeMenuItem = menu.items[1];
+                });
+
+                // Home菜单项应该被添加到菜单的菜单项列表中
+                it('should add home menu item to menu', function() {
+                    expect(menu.items.length).toBe(2);
+                });
+
+                // Home菜单项应该已被菜单引用到
+                it('should be able to be referenced by menu', function() {
+                    expect(menu.homeMenuItem).toBeDefined();
+                });
+
+                // 使用选项参数添加Home菜单项
+                describe('together with another home menu item', function() {
+
+                    // 初始化变量
+                    var homeMenuItem2Options = {
+                            title: 'home',
+                            isHome: true
+                        };
+
+                    // Home菜单项应该被添加到菜单的菜单项列表中
+                    it('should throw more than one home menu item error', function() {
+                        expect(function () {
+                            Menus.addMenuItem(menuId, homeMenuItem2Options);
+                        }).toThrowError('Menu cannot have more than one home menu item');
+                    });
                 });
             });
 
@@ -422,11 +465,11 @@
 
             // 创建菜单并添加菜单项和子菜单项
             beforeEach(function() {
-                Menus.validateMenuExistance = jasmine.createSpy();
                 Menus.addMenu(menuId);
                 Menus.addMenuItem(menuId, menuItem1Options);
                 Menus.addMenuItem(menuId, menuItem2Options);
                 Menus.addMenuItem(menuId, { state:'something.else' });
+                Menus.validateMenuExistance = jasmine.createSpy();
                 Menus.addSubMenuItem(menuId, menuItem1Options.state, subItemOptions);
                 menu = Menus.addSubMenuItem(menuId, menuItem1Options.state);
                 menuItem1 = menu.items[0];
@@ -542,6 +585,131 @@
                 it('should remove sub menu item', function() {
                     expect(menuItem1.items.length).toBe(1);
                     expect(menuItem1.items[0].state).toEqual(subItem2.state);
+                });
+            });
+        });
+
+        // 测试findBreadcrumbMenuItemsByState函数
+        describe('findBreadcrumbMenuItemsByState', function() {
+
+            // 初始化变量
+            var subMenuItemOptions = {
+                    state: 'sub.state'
+                },
+                menuItem1Options = {
+                    state: 'home.state',
+                    isHome: true
+                },
+                menuItem2Options = {
+                    state: 'main.state'
+                },
+                menuId = 'menu1',
+                breadcrumbMenuItems;
+
+            // 创建菜单、菜单项
+            beforeEach(function() {
+                Menus.addMenu(menuId);
+                Menus.addMenuItem(menuId, menuItem1Options);
+                Menus.addMenuItem(menuId, menuItem2Options);
+                Menus.addSubMenuItem(menuId, menuItem2Options.state, subMenuItemOptions);
+                Menus.validateMenuExistance = jasmine.createSpy();
+                breadcrumbMenuItems = Menus.findBreadcrumbMenuItemsByState(menuId, '');
+            });
+
+            // 删除菜单
+            afterEach(function() {
+                Menus.removeMenu(menuId);
+            });
+
+            // 在查找菜单项前应该会调用validateMenuExistance函数来检查菜单是否存在
+            it('should validate menu existance', function() {
+                expect(Menus.validateMenuExistance).toHaveBeenCalledWith(menuId);
+            });
+
+            // 当给定的状态名不能匹配任意的菜单项
+            describe('when matches nothing' , function() {
+
+                beforeEach(function() {
+                    breadcrumbMenuItems = Menus.findBreadcrumbMenuItemsByState(menuId, 'not.existed.state');
+                });
+
+                // 返回的数组应该为空
+                it('the return array should contain nothing', function(){
+                    expect(breadcrumbMenuItems.length).toBe(0);
+                });
+            });
+
+            // 当给定的状态名匹配到Home菜单项
+            describe('when matches the home menu item' , function() {
+
+                beforeEach(function() {
+                    breadcrumbMenuItems = Menus.findBreadcrumbMenuItemsByState(menuId, menuItem1Options.state);
+                });
+
+                // 返回的数组应该只返回Home菜单项
+                it('the return array should contain only the home menu item', function(){
+                    expect(breadcrumbMenuItems.length).toBe(1);
+                });
+
+                // 返回的菜单项为Home菜单项
+                it('the menu item returned should be the home menu item', function(){
+                    expect(breadcrumbMenuItems[0].isHome).toBeTruthy();
+                });
+
+                // 返回的菜单项的状态应该与给定的状态相等
+                it('the state of menu item returned should equal to the given state', function(){
+                    expect(breadcrumbMenuItems[0].state).toEqual(menuItem1Options.state);
+                });
+            });
+
+            // 当给定的状态名匹配到非Home的菜单项
+            describe('when matches the non-home menu item' , function() {
+
+                beforeEach(function() {
+                    breadcrumbMenuItems = Menus.findBreadcrumbMenuItemsByState(menuId, menuItem2Options.state);
+                });
+
+                // 返回的数组应该返回Home菜单项和匹配的主菜单项
+                it('the return array should contain both home and the matching menu item', function(){
+                    expect(breadcrumbMenuItems.length).toBe(2);
+                });
+
+                // 返回的第一个菜单项为Home菜单项
+                it('the first menu item returned should be the home menu item', function(){
+                    expect(breadcrumbMenuItems[0].isHome).toBeTruthy();
+                });
+
+                // 返回的第二个菜单项的状态应该与给定的状态相等
+                it('the state of the second menu item returned should equal to the given state', function(){
+                    expect(breadcrumbMenuItems[1].state).toEqual(menuItem2Options.state);
+                });
+            });
+
+            // 当给定的状态名匹配到子菜单项
+            describe('when matches the sub menu item' , function() {
+
+                beforeEach(function() {
+                    breadcrumbMenuItems = Menus.findBreadcrumbMenuItemsByState(menuId, subMenuItemOptions.state);
+                });
+
+                // 返回的数组应该返回Home菜单项、主菜单项和子菜单项
+                it('the return array should contain the matching sub menu item, its parent and home menu item', function(){
+                    expect(breadcrumbMenuItems.length).toBe(3);
+                });
+
+                // 返回的第一个菜单项为Home菜单项
+                it('the first menu item returned should be the home menu item', function(){
+                    expect(breadcrumbMenuItems[0].isHome).toBeTruthy();
+                });
+
+                // 返回数组中第二个菜单项应该为第三个菜单项的父菜单项
+                it('the second menu item returned is the parent of the third menu item', function(){
+                    expect(breadcrumbMenuItems[1].items).toContain(breadcrumbMenuItems[2]);
+                });
+
+                // 返回数组中子菜单项的状态应该与给定的状态相等
+                it('the state of the third menu item returned should equal to the given state', function(){
+                    expect(breadcrumbMenuItems[2].state).toEqual(subMenuItemOptions.state);
                 });
             });
         });

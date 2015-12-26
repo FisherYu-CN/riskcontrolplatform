@@ -27,6 +27,13 @@ angular.module(ApplicationConfiguration.applicationModuleName)
                 toState.data.roles.forEach(function (role) {
                     if (Authentication.user.roles !== undefined && Authentication.user.roles.indexOf(role) !== -1) {
                         allowed = true;
+
+                        // 如果目标状态需要重定向，则跳转到相应状态
+                        if (toState.redirectTo) {
+                            event.preventDefault();
+                            $state.go(toState.redirectTo);
+                        }
+
                         return true;
                     }
                 });

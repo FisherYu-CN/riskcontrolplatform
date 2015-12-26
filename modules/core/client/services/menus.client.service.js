@@ -118,16 +118,28 @@ angular.module('core').service('Menus', [
             this.validateMenuExistance(menuId);
 
             // 在菜单栏的主菜单项列表中新增一个主菜单项
-            this.menus[menuId].items.push({
+            var menuItem = {
                 title: options.title || '',
                 state: options.state || '',
+                isHome: options.isHome || false,
                 type: options.type || 'item',
                 class: options.class,
                 roles: ((options.roles === null || typeof options.roles === 'undefined') ? this.defaultRoles : options.roles),
                 position: options.position || 0,
                 items: [],
                 shouldRender: shouldRender
-            });
+            };
+
+            // 添加菜单的Home菜单项引用，一个菜单只能有一个Home菜单项
+            if (menuItem.isHome){
+                if (!this.menus[menuId].homeMenuItem) {
+                    this.menus[menuId].homeMenuItem = menuItem;
+                } else {
+                    throw new Error('Menu cannot have more than one home menu item');
+                }
+            }
+
+            this.menus[menuId].items.push(menuItem);
 
             // 添加子菜单项
             if (options.items) {
@@ -214,43 +226,58 @@ angular.module('core').service('Menus', [
         };
 
         /**
-         * 根据状态名查找对应的菜单项或子菜单项
-         * 若子菜单项符合条件，则其父菜单项也会被返回
+         * 根据状态名查找生成breadcrumb导航的菜单项列表
+         * 根据给定状态名不同，返回的菜单项列表构成也相应不同：
+         * 1. 当给定状态名匹配Home菜单项，返回的数组仅包含Home菜单项
+         * 2. 当给定状态名匹配非Home的主菜单项，返回的数组包含Home菜单项与主菜单项
+         * 3. 当给定状态名匹配子菜单项，返回的数组包含Home菜单项、主菜单项与子菜单项
+         * 4. 当给定状态名不匹配任意菜单项，返回空数组
          *
          * @param {string} menuId 菜单栏ID
-         * @param {string} state 目标菜单项的状态名
-         * @returns {Array} 包含菜单项、子菜单项的数组
+         * @param {string} state 菜单项的状态名
+         * @return {Array} 包含符合条件的菜单项的数组
          */
-        this.findMenuItem = function(menuId, state) {
+        this.findBreadcrumbMenuItemsByState = function(menuId, state) {
             // 验证菜单栏是否存在，不存在时会抛出异常
             this.validateMenuExistance(menuId);
 
-            var menuPath = [];
+            var breadcrumbMenuItems = [];
 
             if (state) {
 
-                // 查找菜单项
+                // 查找主菜单项
                 for (var itemIndex = 0; itemIndex < this.menus[menuId].items.length; itemIndex++) {
 
                     if (this.menus[menuId].items[itemIndex].state === state) {
-                        menuPath.push(this.menus[menuId].items[itemIndex]);
-                        return menuPath;
+
+                        // 如果不是匹配到了Home菜单项且该菜单包含了Home菜单项，
+                        // 则需要将Home菜单项添加到返回的数组中的第一位
+                        if (!this.menus[menuId].items[itemIndex].isHome && this.menus[menuId].homeMenuItem) {
+                            breadcrumbMenuItems.push(this.menus[menuId].homeMenuItem);
+                        }
+                        breadcrumbMenuItems.push(this.menus[menuId].items[itemIndex]);
+                        return breadcrumbMenuItems;
                     }
 
                     // 查找子菜单项
                     for (var subitemIndex = 0; subitemIndex < this.menus[menuId].items[itemIndex].items.length; subitemIndex++) {
 
                         if (this.menus[menuId].items[itemIndex].items[subitemIndex].state === state) {
-                            menuPath.push(this.menus[menuId].items[itemIndex]);
-                            menuPath.push(this.menus[menuId].items[itemIndex].items[subitemIndex]);
-                            return menuPath;
+
+                            // 若菜单包含了Home菜单项，则需要将Home菜单项添加到返回的数组中的第一位
+                            if (this.menus[menuId].homeMenuItem) {
+                                breadcrumbMenuItems.push(this.menus[menuId].homeMenuItem);
+                            }
+                            breadcrumbMenuItems.push(this.menus[menuId].items[itemIndex]);
+                            breadcrumbMenuItems.push(this.menus[menuId].items[itemIndex].items[subitemIndex]);
+                            return breadcrumbMenuItems;
                         }
                     }
                 }
             }
 
-            return menuPath;
-        }
+            return breadcrumbMenuItems;
+        };
 
         // 添加侧边菜单栏
         this.addMenu('sidebar', {
