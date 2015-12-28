@@ -47,7 +47,7 @@ angular.module(ApplicationConfiguration.applicationModuleName)
                     }
                     else {
                         // 对未登录用户，跳转到登录页面
-                        $state.go('authentication.signin');
+                        $state.go('signin');
                     }
                 }
             }

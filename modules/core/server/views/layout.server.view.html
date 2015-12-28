@@ -9,25 +9,6 @@
     <meta name="description" content="{{description}}">
     <meta name="fragment" content="!">
 
-    <!-- Apple META -->
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black">
-
-    <!-- Facebook META -->
-    <meta property="fb:app_id" content="{{facebookAppId}}">
-    <meta property="og:site_name" content="{{title}}">
-    <meta property="og:title" content="{{title}}">
-    <meta property="og:description" content="{{description}}">
-    <meta property="og:url" content="{{url}}">
-    <meta property="og:image" content="{{url}}{{logo}}">
-    <meta property="og:type" content="website">
-
-    <!-- Twitter META -->
-    <meta name="twitter:title" content="{{title}}">
-    <meta name="twitter:description" content="{{description}}">
-    <meta name="twitter:url" content="{{url}}">
-    <meta name="twitter:image" content="{{url}}modules/core/img/brand/logo.png">
-
     <!-- Fav Icon -->
     <link href="{{url}}{{favicon}}" rel="shortcut icon" type="image/x-icon">
 
@@ -35,7 +16,8 @@
     {% for cssFile in cssFiles %}<link rel="stylesheet" href="{{cssFile}}">{% endfor %}
 </head>
 
-<body class="ng-cloak">
+
+{% raw %}<body ng-controller="MainController" class="ng-cloak" ng-class="$state.current.data.specialClass">{% endraw %}
 
     {% block content %}{% endblock %}
 

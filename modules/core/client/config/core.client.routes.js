@@ -22,6 +22,7 @@ angular.module('core').config(['$stateProvider', '$urlRouterProvider',
             url: '/not-found',
             templateUrl: 'modules/core/client/views/404.client.view.html',
             data: {
+                specialClass: 'gray-bg',
                 ignoreState: true
             }
         })
@@ -29,6 +30,7 @@ angular.module('core').config(['$stateProvider', '$urlRouterProvider',
             url: '/bad-request',
             templateUrl: 'modules/core/client/views/400.client.view.html',
             data: {
+                specialClass: 'gray-bg',
                 ignoreState: true
             }
         })
@@ -36,6 +38,7 @@ angular.module('core').config(['$stateProvider', '$urlRouterProvider',
             url: '/forbidden',
             templateUrl: 'modules/core/client/views/403.client.view.html',
             data: {
+                specialClass: 'gray-bg',
                 ignoreState: true
             }
         })

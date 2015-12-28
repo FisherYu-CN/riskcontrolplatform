@@ -9,7 +9,7 @@ angular.module('core').factory('AuthInterceptor', ['$q', '$injector',
                     switch (rejection.status) {
                         // 错误码401：未授权，跳转到登录页面
                         case 401:
-                            $injector.get('$state').transitionTo('authentication.signin');
+                            $injector.get('$state').transitionTo('signin');
                             break;
                         // 错误码403：禁止访问，跳转到禁止访问页面
                         case 403:
