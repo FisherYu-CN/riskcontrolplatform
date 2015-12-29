@@ -16,3 +16,12 @@
 .navbar {
 	margin-bottom: 0;
 }
+.error-text {
+	display: none;
+}
+.has-error .help-block.error-text {
+	display: block;
+}
+.has-error .help-inline.error-text {
+	display: inline;
+}

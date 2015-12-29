@@ -8,17 +8,26 @@
         <p>Login in. To see it in action.</p>
 
         <form name="userForm" ng-submit="signin(userForm.$valid)" class="m-t" novalidate>
-            <div class="form-group">
+            <div class="form-group" show-errors>
                 <input type="text" name="username" class="form-control" ng-model="credentials.username" placeholder="Username" lowercase required>
+                <div ng-messages="userForm.username.$error" role="alert">
+                    <p class="help-block error-text" ng-message="required">Username is required.</p>
+                </div>
             </div>
-            <div class="form-group">
+            <div class="form-group" show-errors>
                 <input type="password" name="password" class="form-control" ng-model="credentials.password" placeholder="Password" required>
+                <div ng-messages="userForm.password.$error" role="alert">
+                    <p class="help-block error-text" ng-message="required">Password is required.</p>
+                </div>
             </div>
             <button type="submit" class="btn btn-primary block full-width m-b">Sign in</button>
 
             <a ui-sref="password.forgot"><small>Forgot your password?</small></a>
             <p class="text-muted text-center"><small>Do not have an account?</small></p>
             <a class="btn btn-sm btn-white btn-block" ui-sref="signup">Create an account</a>
+            <alert type="danger" ng-show="error" class="text-center text-danger">-->
+                <span ng-bind="error"></span>
+            </alert>
         </form>
     </div>
 
