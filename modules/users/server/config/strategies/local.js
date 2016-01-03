@@ -5,7 +5,10 @@ var passport = require('passport'),
     LocalStrategy = require('passport-local').Strategy,
     User = require('mongoose').model('User');
 
-module.exports = function () {
+/**
+ * 初始化Passport本地验证策略
+ */
+module.exports = function() {
 
     // 使用本地验证策略
     passport.use(new LocalStrategy({
@@ -16,7 +19,7 @@ module.exports = function () {
             // 根据用户名从本地MongoDB获取用户信息
             User.findOne({
                 username: username.toLowerCase()
-            }, function (err, user) {
+            }, function(err, user) {
                 if (err) {
                     return done(err);
                 }
