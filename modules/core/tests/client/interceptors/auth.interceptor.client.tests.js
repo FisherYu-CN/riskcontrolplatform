@@ -62,7 +62,7 @@
                 };
                 var promise = AuthInterceptor.responseError(response);
                 expect($q.reject).toHaveBeenCalled();
-                expect($state.transitionTo).toHaveBeenCalledWith('authentication.signin');
+                expect($state.transitionTo).toHaveBeenCalledWith('signin');
             });
         });
     });
