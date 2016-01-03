@@ -5,27 +5,27 @@ angular.module('users').config(['$stateProvider',
     function ($stateProvider) {
         // Users state routing
         $stateProvider
-            .state('settings', {
-                abstract: true,
+            .state('portal.settings', {
                 url: '/settings',
                 templateUrl: 'modules/users/client/views/settings/settings.client.view.html',
+                redirectTo: 'portal.settings.profile',
                 data: {
                     roles: ['user', 'admin']
                 }
             })
-            .state('settings.profile', {
+            .state('portal.settings.profile', {
                 url: '/profile',
                 templateUrl: 'modules/users/client/views/settings/edit-profile.client.view.html'
             })
-            .state('settings.password', {
+            .state('portal.settings.password', {
                 url: '/password',
                 templateUrl: 'modules/users/client/views/settings/change-password.client.view.html'
             })
-            .state('settings.accounts', {
+            .state('portal.settings.accounts', {
                 url: '/accounts',
                 templateUrl: 'modules/users/client/views/settings/manage-social-accounts.client.view.html'
             })
-            .state('settings.picture', {
+            .state('portal.settings.picture', {
                 url: '/picture',
                 templateUrl: 'modules/users/client/views/settings/change-profile-picture.client.view.html'
             })
