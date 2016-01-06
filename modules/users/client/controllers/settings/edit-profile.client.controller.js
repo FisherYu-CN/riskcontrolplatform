@@ -5,17 +5,11 @@ angular.module('users').controller('EditProfileController', ['$scope', '$http', 
         $scope.user = angular.extend({}, Authentication.user);
 
         /**
-         * 重置
+         * 更新用户个人资料
+         *
+         * @param {boolean} isValid 表单验证是否通过
          */
-        $scope.reset = function() {
-            $scope.success = false;
-            $scope.error = null;
-        };
-
-        // Update a user profile
         $scope.updateUserProfile = function(isValid) {
-
-            $scope.reset();
 
             if (!isValid) {
                 $scope.$broadcast('show-errors-check-validity', 'userForm');
@@ -25,10 +19,18 @@ angular.module('users').controller('EditProfileController', ['$scope', '$http', 
             var user = new Users($scope.user);
             user.$update(function(response) {
                 $scope.$broadcast('show-errors-reset', 'userForm');
-                $scope.success = true;
+                // 更新成功，显示成功提示信息
+                $scope.$broadcast('show-form-alert', {
+                    type: 'success',
+                    message: 'Profile was successfully updated'
+                });
                 Authentication.user = response;
             }, function (response) {
-                $scope.error = response.data.message;
+                // 更新失败，显示错误提示信息
+                $scope.$broadcast('show-form-alert', {
+                    type: 'danger',
+                    message: response.data.message
+                });
             });
         };
     }

@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('core')
-    .directive('showErrors', ['$timeout', '$interpolate', function ($timeout, $interpolate) {
-        var linkFn = function (scope, el, attrs, formCtrl) {
+    .directive('showErrors', ['$timeout', '$interpolate', function($timeout, $interpolate) {
+        var linkFn = function(scope, el, attrs, formCtrl) {
             var inputEl, inputName, inputNgEl, options, showSuccess, toggleClasses,
                 initCheck = false,
                 showValidationMessages = false,
@@ -18,7 +18,7 @@ angular.module('core')
                 throw new Error('show-errors element has no child input elements with a \'name\' attribute class');
             }
 
-            var reset = function () {
+            var reset = function() {
                 return $timeout(function() {
                     el.removeClass('has-error');
                     el.removeClass('has-success');
@@ -26,9 +26,9 @@ angular.module('core')
                 }, 0, false);
             };
 
-            scope.$watch(function () {
+            scope.$watch(function() {
                 return formCtrl[inputName] && formCtrl[inputName].$invalid;
-            }, function (invalid) {
+            }, function(invalid) {
                 return toggleClasses(invalid);
             });
 
