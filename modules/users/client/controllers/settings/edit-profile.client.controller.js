@@ -4,10 +4,18 @@ angular.module('users').controller('EditProfileController', ['$scope', '$http', 
     function($scope, $http, $location, Users, Authentication) {
         $scope.user = angular.extend({}, Authentication.user);
 
-        // Update a user profile
-        $scope.updateUserProfile = function(isValid) {
+        /**
+         * 重置
+         */
+        $scope.reset = function() {
             $scope.success = false;
             $scope.error = null;
+        };
+
+        // Update a user profile
+        $scope.updateUserProfile = function(isValid) {
+
+            $scope.reset();
 
             if (!isValid) {
                 $scope.$broadcast('show-errors-check-validity', 'userForm');

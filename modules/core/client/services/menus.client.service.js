@@ -2,7 +2,7 @@
 
 // 管理菜单的菜单服务
 angular.module('core').service('Menus', [
-    function () {
+    function() {
         // 定义默认的角色，普通用户与管理员
         this.defaultRoles = ['user', 'admin'];
 
@@ -15,7 +15,7 @@ angular.module('core').service('Menus', [
          * @param {Object} user 登录用户对象
          * @return {boolean} 菜单栏/菜单项应该被渲染时返回true，否则返回false
          */
-        var shouldRender = function (user) {
+        var shouldRender = function(user) {
             // 当菜单栏/菜单项的角色列表中包含*，意味着允许一切角色，则渲染菜单栏/菜单项
             if (!!~this.roles.indexOf('*')) {
                 return true;
@@ -44,7 +44,7 @@ angular.module('core').service('Menus', [
          * @param {string} menuId 菜单栏ID
          * @return {boolean} 菜单栏存在时返回true，否则抛出异常并返回false
          */
-        this.validateMenuExistance = function (menuId) {
+        this.validateMenuExistance = function(menuId) {
             // 菜单栏ID为非空字符串
             if (menuId && menuId.length) {
                 if (this.menus[menuId]) {
@@ -66,7 +66,7 @@ angular.module('core').service('Menus', [
          * @param {string} menuId 菜单栏ID
          * @return {Object} 菜单栏对象
          */
-        this.getMenu = function (menuId) {
+        this.getMenu = function(menuId) {
             // 验证菜单栏是否存在，不存在时会抛出异常
             this.validateMenuExistance(menuId);
             // 返回菜单栏对象
@@ -80,7 +80,7 @@ angular.module('core').service('Menus', [
          * @param {Object} options 菜单栏选项（角色列表/菜单项等）
          * @return {Object} 创建好的菜单栏对象
          */
-        this.addMenu = function (menuId, options) {
+        this.addMenu = function(menuId, options) {
             options = options || {};
             // 创建新的菜单栏对象，默认不包含菜单项
             // 若未指定角色列表，则使用默认角色列表
@@ -98,7 +98,7 @@ angular.module('core').service('Menus', [
          *
          * @param {string} menuId 菜单栏ID
          */
-        this.removeMenu = function (menuId) {
+        this.removeMenu = function(menuId) {
             // 验证菜单栏是否存在，不存在时会抛出异常
             this.validateMenuExistance(menuId);
             // 从菜单栏集合中删除指定的菜单栏对象
@@ -112,7 +112,7 @@ angular.module('core').service('Menus', [
          * @param {Object} options 主菜单项选项（标题/状态名/角色等等）
          * @return {Object} 新建的主菜单项所属的菜单栏对象
          */
-        this.addMenuItem = function (menuId, options) {
+        this.addMenuItem = function(menuId, options) {
             options = options || {};
             // 验证菜单栏是否存在，不存在时会抛出异常
             this.validateMenuExistance(menuId);
@@ -159,7 +159,7 @@ angular.module('core').service('Menus', [
          * @param {Object} options 子菜单项选项（标题/状态名/角色列表等）
          * @return {Object} 新建的子菜单项所属的菜单栏对象
          */
-        this.addSubMenuItem = function (menuId, parentItemState, options) {
+        this.addSubMenuItem = function(menuId, parentItemState, options) {
             options = options || {};
             // 验证菜单栏是否存在，不存在时会抛出异常
             this.validateMenuExistance(menuId);

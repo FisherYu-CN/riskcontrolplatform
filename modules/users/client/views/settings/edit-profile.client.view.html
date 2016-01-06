@@ -2,12 +2,9 @@
     <div breadcrumb></div>
 
     <div class="wrapper wrapper-content animated fadeInRight">
-        <div ng-show="success" class="alert alert-success">
-            <span>Profile was successfully updated</span>
-        </div>
-        <div ng-show="error" class="alert alert-danger">
-            <span ng-bind="error"></span>
-        </div>
+
+        <alert ng-show="success" type="success" close="reset()">Profile was successfully updated</alert>
+        <alert ng-show="error" type="danger" close="reset()">{{error}}</alert>
         <div class="row">
             <div class="col-lg-12">
                 <div class="ibox float-e-margins">
@@ -15,7 +12,6 @@
                         <h5>Profile Settings</h5>
                     </div>
                     <div class="ibox-content">
-
                         <form name="userForm" ng-submit="updateUserProfile(userForm.$valid)" class="form-horizontal" novalidate>
                             <div class="row">
                                 <div class="col-lg-7">
@@ -50,7 +46,7 @@
                                     <div class="form-group" show-errors>
                                         <label class="col-lg-3 control-label">Mobile</label>
                                         <div class="col-lg-9">
-                                            <input type="text" name="mobile" class="form-control" ng-model="user.mobile" placeholder="Mobile" required>
+                                            <input type="text" name="mobile" class="form-control" ng-model="user.mobile" placeholder="Mobile" required mobile-phone-number>
                                             <div ng-messages="userForm.mobile.$error" role="alert">
                                                 <p class="help-block error-text" ng-message="required">Mobile phone number is required.</p>
                                                 <p class="help-block error-text" ng-message="mobile">Mobile phone number is invalid.</p>
