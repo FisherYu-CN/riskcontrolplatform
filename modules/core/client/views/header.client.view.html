@@ -23,29 +23,34 @@
 
         <!-- 个人信息管理 -->
         <ul class="nav navbar-top-links navbar-right" ng-show="authentication.user">
-            <li class="dropdown" dropdown>
-                <a class="dropdown-toggle" dropdown-toggle role="button">
-                    <span ng-bind="authentication.user.name"></span> <b class="caret"></b>
+            <li>
+                <a href="/api/auth/signout" target="_self" tooltip-placement="bottom" tooltip-append-to-body="true" tooltip="Sign Out">
+                    <i class="fa fa-lg fa-sign-out"></i>
                 </a>
-                <ul class="dropdown-menu" role="menu">
-                    <li ui-sref-active="active">
-                        <a ui-sref="portal.settings.profile">Edit Profile</a>
-                    </li>
-                    <li ui-sref-active="active">
-                        <a ui-sref="portal.settings.picture">Change Profile Picture</a>
-                    </li>
-                    <li ui-sref-active="active" ng-show="authentication.user.provider === 'local'">
-                        <a ui-sref="portal.settings.password">Change Password</a>
-                    </li>
-                    <li ui-sref-active="active">
-                        <a ui-sref="portal.settings.accounts">Manage Social Accounts</a>
-                    </li>
-                    <li class="divider"></li>
-                    <li>
-                        <a href="/api/auth/signout" target="_self">Signout</a>
-                    </li>
-                </ul>
             </li>
+            <!--<li class="dropdown" dropdown>-->
+                <!--<a class="dropdown-toggle" dropdown-toggle role="button">-->
+                    <!--<span ng-bind="authentication.user.name"></span> <b class="caret"></b>-->
+                <!--</a>-->
+                <!--<ul class="dropdown-menu" role="menu">-->
+                    <!--<li ui-sref-active="active">-->
+                        <!--<a ui-sref="portal.users.profile">Edit Profile</a>-->
+                    <!--</li>-->
+                    <!--<li ui-sref-active="active">-->
+                        <!--<a ui-sref="portal.settings.picture">Change Profile Picture</a>-->
+                    <!--</li>-->
+                    <!--<li ui-sref-active="active" ng-show="authentication.user.provider === 'local'">-->
+                        <!--<a ui-sref="portal.settings.password">Change Password</a>-->
+                    <!--</li>-->
+                    <!--<li ui-sref-active="active">-->
+                        <!--<a ui-sref="portal.settings.accounts">Manage Social Accounts</a>-->
+                    <!--</li>-->
+                    <!--<li class="divider"></li>-->
+                    <!--<li>-->
+                        <!--<a href="/api/auth/signout" target="_self">Signout</a>-->
+                    <!--</li>-->
+                <!--</ul>-->
+            <!--</li>-->
         </ul>
     </nav>
 </div>

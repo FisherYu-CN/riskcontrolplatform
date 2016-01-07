@@ -24,7 +24,14 @@
 
                     <!-- 个人信息菜单栏 -->
                     <ul dropdown-menu class="dropdown-menu animated fadeInRight m-t-xs">
-                        <li><a href="/api/auth/signout" target="_self">Logout</a></li>
+                        <li>
+                            <a ui-sref="portal.users.profile">Edit Profile</a>
+                        </li>
+                        <li ng-show="authentication.user.provider === 'local'">
+                            <a ui-sref="portal.users.password">Change Password</a>
+                        </li>
+                        <li class="divider"></li>
+                        <li><a href="/api/auth/signout" target="_self">Sign Out</a></li>
                     </ul>
                 </div>
 
