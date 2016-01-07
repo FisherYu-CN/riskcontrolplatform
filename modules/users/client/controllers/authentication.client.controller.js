@@ -5,8 +5,14 @@ angular.module('users').controller('AuthenticationController', ['$scope', '$stat
         // 暴露鉴权服务
         $scope.authentication = Authentication;
 
-        // 获取URL参数中定义的错误信息
-        $scope.error = $location.search().err;
+        // 获取URL参数中定义的错误信息并显示
+        var errorMsg = $location.search().err;
+        if (errorMsg) {
+            $scope.$broadcast('show-form-alert', {
+                type: 'danger',
+                message: errorMsg
+            });
+        }
 
         // 如果用户已经登录，重定位到系统主页面
         if ($scope.authentication.user) {
@@ -38,7 +44,10 @@ angular.module('users').controller('AuthenticationController', ['$scope', '$stat
                 })
                 .error(function(response) {
                     // 如果注册失败，将返回的错误信息显示到前台页面
-                    $scope.error = response.message;
+                    $scope.$broadcast('show-form-alert', {
+                        type: 'danger',
+                        message: response.message
+                    });
                 });
         };
 
@@ -67,7 +76,10 @@ angular.module('users').controller('AuthenticationController', ['$scope', '$stat
                 })
                 .error(function (response) {
                     // 如果注册失败，将返回的错误信息显示到前台页面
-                    $scope.error = response.message;
+                    $scope.$broadcast('show-form-alert', {
+                        type: 'danger',
+                        message: response.message
+                    });
                 });
         };
 

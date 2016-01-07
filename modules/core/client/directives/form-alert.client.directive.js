@@ -27,7 +27,7 @@ angular.module('core')
 
         return {
             restrict: 'A',
-            template: '<alert ng-show="formAlert.display" type="{{formAlert.type}}" close="closeFormAlert()">{{formAlert.message}}</alert>',
+            template: '<alert ng-show="formAlert.display" type="{{formAlert.type}}" ng-click="closeFormAlert()">{{formAlert.message}}</alert>',
             link: linkFn
         };
     });
