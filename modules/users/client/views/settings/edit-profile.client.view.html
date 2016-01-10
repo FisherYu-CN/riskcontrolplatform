@@ -53,7 +53,18 @@
                                     </div>
                                 </div>
                                 <div class="col-lg-5">
-
+                                    <div>
+                                        <img ng-src="{{user.profileImageURL}}" alt="{{user.name}}" class="img-thumbnail user-profile-picture">
+                                        <div class="">
+                                            <span class="help-block">You can change your profile picture here or remove the current profile picture to revert to the default profile picture</span>
+                                            <hr/>
+                                            <a class="btn-sm btn-white btn-file">
+                                                <i class="fa fa-paperclip"></i>
+                                                <span>Choose File ...</span>
+                                                <input type="file" nv-file-select uploader="uploader">
+                                            </a>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                             <div class="hr-line-dashed"></div>

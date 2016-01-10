@@ -7,6 +7,12 @@
 [ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
 	display: none !important;
 }
+
+.header-profile-image {
+	height: 48px;
+	width: 48px;
+}
+
 /*.ng-invalid.ng-dirty {*/
 	/*border-color: #FA787E;*/
 /*}*/

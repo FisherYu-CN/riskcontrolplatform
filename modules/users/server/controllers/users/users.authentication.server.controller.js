@@ -35,8 +35,8 @@ exports.signup = function(req, res) {
             });
         } else {
             // 登录前删除密码/salt等敏感数据
-            delete user.password;
-            delete user.salt;
+            user.password = undefined;
+            user.salt = undefined;
             // 调用Passport的login函数来建立login session
             req.login(user, function(err) {
                 if (err) {
@@ -61,8 +61,8 @@ exports.signin = function(req, res, next) {
             res.status(400).send(info);
         } else {
             // 登录前删除密码/salt等敏感数据
-            delete user.password;
-            delete user.salt;
+            user.password = undefined;
+            user.salt = undefined;
             // 调用Passport的login函数来建立login session
             req.login(user, function(err) {
                 if (err) {

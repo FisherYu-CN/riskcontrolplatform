@@ -25,7 +25,7 @@ angular.module('users').config(['$stateProvider',
             //    url: '/accounts',
             //    templateUrl: 'modules/users/client/views/settings/manage-social-accounts.client.view.html'
             //})
-            //.state('portal.settings.picture', {
+            //.state('portal.users.picture', {
             //    url: '/picture',
             //    templateUrl: 'modules/users/client/views/settings/change-profile-picture.client.view.html'
             //})
