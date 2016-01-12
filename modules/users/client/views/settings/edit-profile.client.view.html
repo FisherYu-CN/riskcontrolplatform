@@ -12,7 +12,7 @@
                     <div class="ibox-content">
                         <form name="userForm" ng-submit="updateUserProfile(userForm.$valid)" class="form-horizontal" novalidate>
                             <div class="row">
-                                <div class="col-lg-7">
+                                <div class="col-lg-9">
                                     <div class="form-group" show-errors>
                                         <label class="col-lg-3 control-label">Name</label>
                                         <div class="col-lg-9">
@@ -52,16 +52,16 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-lg-5">
-                                    <div>
-                                        <img ng-src="{{user.profileImageURL}}" alt="{{user.name}}" class="img-thumbnail user-profile-picture">
-                                        <div class="">
-                                            <span class="help-block">You can change your profile picture here or remove the current profile picture to revert to the default profile picture</span>
-                                            <hr/>
-                                            <a class="btn-sm btn-white btn-file">
-                                                <i class="fa fa-paperclip"></i>
-                                                <span>Choose File ...</span>
+                                <div class="col-lg-3">
+                                    <div class="user-profile-picture-panel">
+                                        <img ng-src="{{imageURL}}" alt="{{user.name}}" class="img-thumbnail user-profile-picture">
+                                        <div class="user-profile-picture-btn">
+                                            <span ng-hide="uploader.queue.length" class="btn btn-sm btn-info btn-block btn-file">
+                                                <span>Select New Picture</span>
                                                 <input type="file" nv-file-select uploader="uploader">
+                                            </span>
+                                            <a ng-show="uploader.queue.length" class="btn btn-sm btn-danger btn-block" ng-click="cancelSelect()">
+                                                <span>Cancel</span>
                                             </a>
                                         </div>
                                     </div>

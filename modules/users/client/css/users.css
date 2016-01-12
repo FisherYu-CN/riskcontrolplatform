@@ -35,9 +35,17 @@
     display: block;
 }
 
+.user-profile-picture-panel {
+    min-width: 195px;
+    max-width: 195px;
+}
+
 .user-profile-picture {
-    float: left;
-    min-height: 170px;
-    max-height: 170px;
+    min-height: 195px;
+    max-height: 195px;
     margin-right: 10px;
+}
+
+.user-profile-picture-btn {
+    margin-top: 10px;
 }
