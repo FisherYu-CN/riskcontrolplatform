@@ -6,6 +6,36 @@ angular.module('users').controller('EditProfileController', ['$scope', '$http', 
         $scope.user = angular.extend({}, Authentication.user);
         $scope.imageURL = $scope.user.profileImageURL;
 
+        /**
+         * 更新用户个人资料
+         */
+        var updateUserProfile = function() {
+            // 复制一个用户对象用以更新，不直接使用scope的用户的原因
+            // 是为了能在更新失败后在有必要时可以回退头像状态到更新前
+            var userToBeUpdated = angular.extend({}, $scope.user);
+            userToBeUpdated.profileImageURL = $scope.imageURL;
+
+            var user = new Users(userToBeUpdated);
+            user.$update(function(response) {
+                $scope.$broadcast('show-errors-reset', 'userForm');
+                // 更新成功，显示成功提示信息
+                $scope.$broadcast('show-form-alert', {
+                    type: 'success',
+                    message: 'Profile was successfully updated'
+                });
+                // 将更新后的结果反馈回相应对象
+                Authentication.user = response;
+                $scope.user = response;
+                $scope.cancelSelect();
+            }, function (response) {
+                // 更新失败，显示错误提示信息
+                $scope.$broadcast('show-form-alert', {
+                    type: 'danger',
+                    message: response.data.message
+                });
+            });
+        };
+
         // 初始化文件上传服务
         $scope.uploader = new FileUploader({
             url: 'api/users/picture'
@@ -45,8 +75,8 @@ angular.module('users').controller('EditProfileController', ['$scope', '$http', 
          * @param {Object} response 上传图片获取的响应对象
          */
         $scope.uploader.onSuccessItem = function(fileItem, response) {
-            $scope.user.profileImageURL = response.profileImageURL;
-            $scope.cancelUpload();
+            $scope.imageURL = response;
+            updateUserProfile();
         };
 
         /**
@@ -74,38 +104,25 @@ angular.module('users').controller('EditProfileController', ['$scope', '$http', 
         };
 
         /**
-         * 更新用户个人资料
+         * 提交用户资料表单以更新用户信息
          *
          * @param {boolean} isValid 表单验证是否通过
          */
-        $scope.updateUserProfile = function(isValid) {
+        $scope.submitUserForm = function(isValid) {
 
             if (!isValid) {
                 $scope.$broadcast('show-errors-check-validity', 'userForm');
                 return false;
             }
 
-            // 用户选择了新的头像图片
-            if ($scope.uploader.queue.length) {
+            // 只有在用户选择了新的头像图片，并且图片没有被上传时才调用上传方法
+            // 可能存在图片已被上传但由于其他原因更新用户资料没有成功，在上述情况下
+            // 无需再一次上传图片，而图片URL已经更新为之前上传后获取的URL，因此只需更新用户资料即可
+            if ($scope.uploader.queue.length && $scope.uploader.progress === 0) {
                 $scope.uploader.uploadAll();
+            } else {
+                updateUserProfile();
             }
-
-            var user = new Users($scope.user);
-            user.$update(function(response) {
-                $scope.$broadcast('show-errors-reset', 'userForm');
-                // 更新成功，显示成功提示信息
-                $scope.$broadcast('show-form-alert', {
-                    type: 'success',
-                    message: 'Profile was successfully updated'
-                });
-                Authentication.user = response;
-            }, function (response) {
-                // 更新失败，显示错误提示信息
-                $scope.$broadcast('show-form-alert', {
-                    type: 'danger',
-                    message: response.data.message
-                });
-            });
         };
     }
 ]);

@@ -66,24 +66,8 @@ exports.changeProfilePicture = function(req, res) {
                     message: 'Error occurred while uploading profile picture'
                 });
             } else {
-                // 用户头像图片上传成功，更新用户对象中的URL
-                user.profileImageURL = 'modules/users/client/img/profile/uploads/' + req.files.file.name;
-                user.save(function(saveError) {
-                    if (saveError) {
-                        return res.status(400).send({
-                            message: errorHandler.getErrorMessage(saveError)
-                        });
-                    } else {
-                        // 调用Passport的login函数来建立login session
-                        req.login(user, function(err) {
-                            if (err) {
-                                res.status(400).send(err);
-                            } else {
-                                res.json(user);
-                            }
-                        });
-                    }
-                });
+                // 用户头像图片上传成功，返回图片URL
+                res.json('modules/users/client/img/profile/uploads/' + req.files.file.name);
             }
         });
     } else {
