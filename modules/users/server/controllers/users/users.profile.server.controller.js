@@ -2,6 +2,7 @@
 
 // 定义模块依赖
 var _ = require('lodash'),
+    mkdirp = require('mkdirp'),
     fs = require('fs'),
     path = require('path'),
     errorHandler = require(path.resolve('./modules/core/server/controllers/errors.server.controller')),
@@ -60,14 +61,26 @@ exports.changeProfilePicture = function(req, res) {
     var user = req.user;
     // 上传用户头像并更新信息
     if (user) {
-        fs.writeFile('./modules/users/client/img/profile/uploads/' + req.files.file.name, req.files.file.buffer, function(uploadError) {
-            if (uploadError) {
+        // 图片保存路径
+        var filepath = 'uploads/profile/' + req.files.file.name;
+        // 确保图片保存的目录存在
+        mkdirp(path.dirname('./' + filepath), function(error) {
+            if (error) {
                 return res.status(400).send({
-                    message: 'Error occurred while uploading profile picture'
+                    message: 'Error occurred while creating folder for the profile picture'
                 });
             } else {
-                // 用户头像图片上传成功，返回图片URL
-                res.json('modules/users/client/img/profile/uploads/' + req.files.file.name);
+                // 写入图片文件
+                fs.writeFile(filepath, req.files.file.buffer, function(uploadError) {
+                    if (uploadError) {
+                        return res.status(400).send({
+                            message: 'Error occurred while uploading profile picture'
+                        });
+                    } else {
+                        // 用户头像图片上传成功，返回图片URL
+                        res.json(filepath);
+                    }
+                });
             }
         });
     } else {
