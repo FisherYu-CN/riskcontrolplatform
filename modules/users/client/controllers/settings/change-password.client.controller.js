@@ -1,27 +1,61 @@
 'use strict';
 
 angular.module('users').controller('ChangePasswordController', ['$scope', '$http', 'Authentication',
-  function ($scope, $http, Authentication) {
-    $scope.user = Authentication.user;
+    function ($scope, $http, Authentication) {
 
-    // Change user password
-    $scope.changeUserPassword = function (isValid) {
-      $scope.success = $scope.error = null;
+        $scope.user = Authentication.user;
 
-      if (!isValid) {
-        $scope.$broadcast('show-errors-check-validity', 'passwordForm');
+        /**
+         * 忘记密码时，发送重置密码邮件到注册邮箱
+         */
+        $scope.forgotPassword = function() {
 
-        return false;
-      }
+            $http.post('/api/auth/forgot', $scope.user)
+                .success(function(response) {
+                    // 更新成功，显示成功提示信息
+                    $scope.$broadcast('show-form-alert', {
+                        type: 'info',
+                        message: response.message
+                    });
+                })
+                .error(function(response) {
+                    // 更新失败，显示错误提示信息
+                    $scope.$broadcast('show-form-alert', {
+                        type: 'danger',
+                        message: response.message
+                    });
+                });
+        };
 
-      $http.post('/api/users/password', $scope.passwordDetails).success(function (response) {
-        // If successful show success message and clear form
-        $scope.$broadcast('show-errors-reset', 'passwordForm');
-        $scope.success = true;
-        $scope.passwordDetails = null;
-      }).error(function (response) {
-        $scope.error = response.message;
-      });
-    };
-  }
+        /**
+         * 修改用户密码
+         *
+         * @param {boolean} isValid 表单验证是否通过
+         */
+        $scope.changeUserPassword = function(isValid) {
+
+            if (!isValid) {
+                $scope.$broadcast('show-errors-check-validity', 'passwordForm');
+                return false;
+            }
+
+            $http.post('/api/users/password', $scope.passwordDetails)
+                .success(function(response) {
+                    $scope.$broadcast('show-errors-reset', 'passwordForm');
+                    // 更新成功，显示成功提示信息
+                    $scope.$broadcast('show-form-alert', {
+                        type: 'success',
+                        message: response.message
+                    });
+                    $scope.passwordDetails = null;
+                })
+                .error(function(response) {
+                    // 更新失败，显示错误提示信息
+                    $scope.$broadcast('show-form-alert', {
+                        type: 'danger',
+                        message: response.message
+                    });
+                });
+        };
+    }
 ]);

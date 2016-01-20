@@ -63,7 +63,7 @@ exports.forgot = function(req, res, next) {
         // 步骤三：渲染模板邮件
         function(token, user, done) {
             res.render(path.resolve('modules/users/server/templates/reset-password-email'), {
-                name: user.displayName,
+                name: user.name,
                 appName: config.app.title,
                 url: 'http://' + req.headers.host + '/api/auth/reset/' + token
             }, function(err, emailHTML) {
