@@ -14,11 +14,6 @@ angular.module('users').controller('AuthenticationController', ['$scope', '$stat
             });
         }
 
-        // 如果用户已经登录，重定位到系统主页面
-        if ($scope.authentication.user) {
-            $location.path('/portal');
-        }
-
         /**
          * 用户注册
          *

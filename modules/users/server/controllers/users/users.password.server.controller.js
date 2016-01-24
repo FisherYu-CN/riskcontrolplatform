@@ -31,14 +31,29 @@ exports.forgot = function(req, res, next) {
         },
         // 步骤二：根据用户名查找用户
         function(token, done) {
-            if (req.body.username) {
-                User.findOne(
-                    {username: req.body.username.toLowerCase()},
+            if (req.body.username || req.body.email) {
+
+                // 初始化查询条件，用户名或者电子邮件
+                var conditions = [];
+                if (req.body.username) {
+                    conditions.push({
+                        username: req.body.username.toLowerCase()
+                    });
+                }
+                if (req.body.email) {
+                    conditions.push({
+                        email: req.body.email.toLowerCase()
+                    });
+                }
+
+                User.findOne({
+                        $or: conditions
+                    },
                     '-salt -password',
                     function(err, user) {
                         if (!user) {
                             return res.status(400).send({
-                                message: 'No account with that username has been found'
+                                message: 'The account does not exist'
                             });
                         } else if (user.provider !== 'local') {
                             return res.status(400).send({
@@ -56,7 +71,7 @@ exports.forgot = function(req, res, next) {
                     });
             } else {
                 return res.status(400).send({
-                    message: 'Username field must not be blank'
+                    message: 'At least one of username and email need to be specified'
                 });
             }
         },
@@ -180,7 +195,7 @@ exports.reset = function(req, res, next) {
         // 步骤二：渲染密码重置确认邮件
         function(user, done) {
             res.render('modules/users/server/templates/reset-password-confirm-email', {
-                name: user.displayName,
+                name: user.name,
                 appName: config.app.title
             }, function(err, emailHTML) {
                 done(err, emailHTML, user);

@@ -36,13 +36,16 @@
 }
 
 .user-profile-picture-panel {
-    min-width: 195px;
-    max-width: 195px;
+    width: 100%;
+    overflow: hidden;
+}
+
+.user-profile-picture-panel:after {
+    content: '';
+    margin-top: 100%; /* margin百分比以元素宽度计算，因此可以使头像以正方形显示 */
 }
 
 .user-profile-picture {
-    min-height: 195px;
-    max-height: 195px;
     margin-right: 10px;
 }
 
