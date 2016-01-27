@@ -12,14 +12,11 @@ angular.module('users').controller('PasswordController', ['$scope', '$stateParam
 
           $http.post('/api/auth/forgot', $scope.credentials)
               .success(function(response) {
-                  // 更新成功，显示成功提示信息
-                  $scope.$broadcast('show-form-alert', {
-                      type: 'info',
-                      message: response.message
-                  });
+                  // 提交重置密码请求成功，跳转到成功提示页面
+                  $state.go('password.forgot.success');
               })
               .error(function (response) {
-                  // 更新失败，显示错误提示信息
+                  // 提交重置密码请求失败，显示错误提示信息
                   $scope.$broadcast('show-form-alert', {
                       type: 'danger',
                       message: response.message
@@ -41,7 +38,7 @@ angular.module('users').controller('PasswordController', ['$scope', '$stateParam
               .success(function(response) {
                   $scope.passwordDetails = null;
                   Authentication.user = response;
-                  // 更新失败，跳转到成功修改密码提示页面
+                  // 更新成功，跳转到成功修改密码提示页面
                   $state.go('password.reset.success');
               })
               .error(function(response) {

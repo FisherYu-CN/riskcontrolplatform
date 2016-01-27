@@ -56,3 +56,11 @@
 .forget-password-link {
     margin-top: 7px;
 }
+
+.info-message {
+    padding-top: 100px;
+}
+
+.error-desc {
+    margin-bottom: 5px;
+}

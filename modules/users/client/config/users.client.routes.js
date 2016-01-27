@@ -50,7 +50,16 @@ angular.module('users').config(['$stateProvider',
             })
             .state('password.forgot', {
                 url: '/forgot',
+                abstract: true,
+                template: '<ui-view/>'
+            })
+            .state('password.forgot.form', {
+                url: '',
                 templateUrl: 'modules/users/client/views/password/forgot-password.client.view.html'
+            })
+            .state('password.forgot.success', {
+                url: '/success',
+                templateUrl: 'modules/users/client/views/password/forgot-password-success.client.view.html'
             })
             .state('password.reset', {
                 url: '/reset',

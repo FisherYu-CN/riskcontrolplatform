@@ -22,7 +22,7 @@ angular.module('users').controller('AuthenticationController', ['$scope', '$stat
          */
         $scope.signup = function(isValid) {
             $scope.error = null;
-            // 如果表单验证不通过，广播show-errors-check-validity事件
+            // 如果表单验证不通过，广播show-errors-check-validity事件显示错误信息
             if (!isValid) {
                 $scope.$broadcast('show-errors-check-validity', 'userForm');
                 return false;
